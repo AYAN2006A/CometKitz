@@ -1,0 +1,21 @@
+#include <Wire.h>
+#include <MPU6050_light.h>
+ 
+MPU6050 mpu(Wire);
+unsigned long StartTime = millis();
+void setup() {
+  Serial.begin(115200);                           // Ensure serial monitor set to this value also    
+                
+  Wire.begin();
+  mpu.begin();
+  Serial.println(F("Calculating gyro offset, do not move MPU6050")); 
+  mpu.calcGyroOffsets();  
+  mpu.calcAccOffsets();                          // This does the calibration       
+}
+ 
+void loop() {
+  unsigned long CurrentTime = millis();
+unsigned long ElapsedTime = CurrentTime - StartTime;
+  mpu.update();  
+  Serial.println(mpu.getAngleZ()); 
+  }
